@@ -1,0 +1,11 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+#Health check
+GET  /health                                  @controllers.health.HealthController.getHealth()
+GET  /:service/health                      @controllers.health.HealthController.getUserOrgServiceHealth(service:String)
+
+
+# Logs Management APIs
+# POST    /v1.3/system/log/update           @controllers.logsmanager.LogController.setLogLevel()
