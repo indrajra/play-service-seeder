@@ -76,22 +76,6 @@
             <version>${play2.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-slf4j_2.12</artifactId>
-            <version>${akka.x.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpClient.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-testkit_2.12</artifactId>
-            <version>${akka.x.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
             <version>${powermock.version}</version>

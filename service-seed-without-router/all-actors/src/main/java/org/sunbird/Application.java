@@ -12,7 +12,7 @@ import java.util.List;
  * @author Amit Kumar
  */
 public class Application {
-
+    private final static String actorSystemName = "thisActorSystem";
     private static Application instance = new Application();
 
     // private constructor restricted to this class itself
@@ -28,7 +28,7 @@ public class Application {
     public void init() {
         List<String> actorClassPaths = new ArrayList<>();
         actorClassPaths.add("org.sunbird");
-        ActorService.getInstance().init("thisActorSystem", actorClassPaths);
+        ActorService.getInstance().init(actorSystemName, actorClassPaths);
     }
 
 
