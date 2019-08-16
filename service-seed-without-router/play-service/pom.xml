@@ -29,13 +29,28 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe.play</groupId>
-            <artifactId>play_2.12</artifactId>
+            <artifactId>play-guice_${scala.major.version}</artifactId>
+            <version>${play2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.play</groupId>
+            <artifactId>play_${scala.major.version}</artifactId>
             <version>${play2.version}</version>
             <exclusions>
                 <exclusion>
@@ -43,11 +58,6 @@
                     <artifactId>scala-reflect</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.play</groupId>
-            <artifactId>play-guice_2.12</artifactId>
-            <version>${play2.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -61,19 +71,25 @@
         </dependency>
         <dependency>
             <groupId>com.typesafe.play</groupId>
-            <artifactId>play-akka-http-server_2.12</artifactId>
+            <artifactId>play-akka-http-server_2.11</artifactId>
             <version>${play2.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-remote_2.12</artifactId>
+            <artifactId>akka-remote_2.11</artifactId>
             <version>${akka.x.version}</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe.play</groupId>
-            <artifactId>filters-helpers_2.12</artifactId>
+            <artifactId>filters-helpers_${scala.major.version}</artifactId>
             <version>${play2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.play</groupId>
+            <artifactId>play-specs2_${scala.major.version}</artifactId>
+            <version>${play2.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
@@ -122,16 +138,6 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>com.google.code.play2-maven-plugin</groupId>
-                <artifactId>play2-maven-plugin</artifactId>
-                <version>1.0.0-rc1</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <!-- if using controllers without dependency injection; default value is "injected" -->
-                    <routesGenerator>static</routesGenerator>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.google.code.sbt-compiler-maven-plugin</groupId>
                 <artifactId>sbt-compiler-maven-plugin</artifactId>
                 <version>1.0.0</version>
@@ -155,6 +161,12 @@
                         <include>**/*Test.java</include>
                     </includes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.play2-maven-plugin</groupId>
+                <artifactId>play2-maven-plugin</artifactId>
+                <version>${play2.plugin.version}</version>
+                <extensions>true</extensions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -189,20 +201,20 @@
         </plugins>
     </build>
     <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>scalaz-bintray</id>-->
-            <!--<name>Scalaz Bintray - releases</name>-->
-            <!--<url>https://dl.bintray.com/scalaz/releases/</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>jitpack.io</id>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-            <!--<url>https://jitpack.io</url>-->
-        <!--</repository>-->
+    <!--<repository>-->
+    <!--<id>scalaz-bintray</id>-->
+    <!--<name>Scalaz Bintray - releases</name>-->
+    <!--<url>https://dl.bintray.com/scalaz/releases/</url>-->
+    <!--<snapshots>-->
+    <!--<enabled>false</enabled>-->
+    <!--</snapshots>-->
+    <!--</repository>-->
+    <!--<repository>-->
+    <!--<id>jitpack.io</id>-->
+    <!--<snapshots>-->
+    <!--<enabled>false</enabled>-->
+    <!--</snapshots>-->
+    <!--<url>https://jitpack.io</url>-->
+    <!--</repository>-->
     <!--</repositories>-->
 </project>
