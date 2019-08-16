@@ -7,7 +7,7 @@ import org.sunbird.response.Response;
 
 @ActorConfig(
         tasks = {"demoTask"},
-        dispatcher = "=",
+        dispatcher = "",
         asyncTasks = {}
 )
 public class DemoActor extends BaseActor {
