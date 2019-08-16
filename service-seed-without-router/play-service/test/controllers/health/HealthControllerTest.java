@@ -35,6 +35,7 @@ public class HealthControllerTest extends BaseControllerTest {
         app = null;
         testHelper = null;
     }
+
     @Test
     public void testGetHealthSuccess() {
         Map<String, Object> reqMap = new HashMap<>();
