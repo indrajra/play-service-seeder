@@ -42,7 +42,9 @@ public class TestHelper extends WithApplication {
     } else {
       req = new Http.RequestBuilder().uri(url).method(method);
     }
-    //req.headers(headerMap);
+    for(Map.Entry<String,String[]>map:headerMap.entrySet()){
+      req.header(map.getKey(),map.getValue()[0]);
+    }
     Result result = route(fakeApplication(), req);
     return result;
   }
