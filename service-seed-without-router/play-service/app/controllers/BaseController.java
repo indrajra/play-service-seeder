@@ -17,6 +17,7 @@ import play.mvc.Result;
 import play.mvc.Results;
 import utils.JsonKey;
 import utils.RequestMapper;
+import utils.RequestValidatorFunction;
 
 /**
  * This controller we can use for writing some common method to handel api request.
@@ -64,7 +65,7 @@ public class BaseController extends Controller {
      * @param operation
      * @return
      */
-    public CompletionStage<Result> handleRequest(play.mvc.Http.Request req, Function validatorFunction, String operation) {
+    public CompletionStage<Result> handleRequest(play.mvc.Http.Request req, RequestValidatorFunction validatorFunction, String operation) {
         try {
             Request request = (Request) RequestMapper.mapRequest(req, Request.class);
             if (validatorFunction != null) {

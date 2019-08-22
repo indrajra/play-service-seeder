@@ -1,6 +1,7 @@
 package org.sunbird;
 
 import akka.actor.UntypedAbstractActor;
+import org.apache.log4j.Logger;
 import org.sunbird.message.IResponseMessage;
 import org.sunbird.message.Localizer;
 import org.sunbird.message.ResponseCode;
@@ -13,6 +14,7 @@ import java.util.Locale;
  */
 public abstract class BaseActor extends UntypedAbstractActor {
 
+    private Logger logger = Logger.getLogger(BaseActor.class);
     public abstract void onReceive(Request request) throws Throwable;
     protected Localizer localizer = Localizer.getInstance();
 
@@ -21,16 +23,16 @@ public abstract class BaseActor extends UntypedAbstractActor {
         if (message instanceof Request) {
             Request request = (Request) message;
             String operation = request.getOperation();
-            ////ProjectLogger.log("BaseActor:onReceive called for operation:" + operation, LoggerEnum.INFO);
+            logger.info("BaseActor:onReceive called for operation:" + operation);
             try {
-                ////ProjectLogger.log(String.format("%s:%s:method started at %s",this.getClass().getSimpleName(),operation,System.currentTimeMillis()), LoggerEnum.DEBUG);
+                logger.info(String.format("%s:%s:method started at %s",this.getClass().getSimpleName(),operation,System.currentTimeMillis()));
                 onReceive(request);
-                ////ProjectLogger.log(String.format("%s:%s:method ended at %s",this.getClass().getSimpleName(),operation,System.currentTimeMillis()), LoggerEnum.DEBUG);
+                logger.info(String.format("%s:%s:method ended at %s",this.getClass().getSimpleName(),operation,System.currentTimeMillis()));
             } catch (Exception e) {
                 onReceiveException(operation, e);
             }
         } else {
-            //ProjectLogger.log("BaseActor: onReceive called with invalid type of request.", LoggerEnum.INFO);
+            logger.info("BaseActor: onReceive called with invalid type of request.");
         }
     }
 
@@ -41,7 +43,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @throws Exception
      */
     protected void onReceiveException(String callerName, Exception exception) throws Exception {
-        //ProjectLogger.log("Exception in message processing for: " + callerName + " :: message: " + exception.getMessage(), exception);
+        logger.error("Exception in message processing for: " + callerName + " :: message: " + exception.getMessage(), exception);
         sender().tell(exception, self());
     }
 
@@ -51,7 +53,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @param callerName
      */
     protected void onReceiveUnsupportedMessage(String callerName) {
-        //ProjectLogger.log(callerName + ": unsupported operation", LoggerEnum.INFO);
+        logger.info(callerName + ": unsupported operation");
         /**
          * TODO Need to replace null reference from getLocalized method and replace with requested local.
          */
@@ -90,7 +92,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @param tag
      */
     public void startTrace(String tag) {
-        //ProjectLogger.log(String.format("%s:%s:started at %s", this.getClass().getSimpleName(), tag, getTimeStamp()),LoggerEnum.DEBUG.name());
+        logger.info(String.format("%s:%s:started at %s", this.getClass().getSimpleName(), tag, getTimeStamp()));
     }
 
     /**
@@ -99,6 +101,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @param tag
      */
     public void endTrace(String tag) {
-        //ProjectLogger.log(String.format("%s:%s:ended at %s", this.getClass().getSimpleName(), tag, getTimeStamp()),LoggerEnum.DEBUG.name());
+        logger.info(String.format("%s:%s:ended at %s", this.getClass().getSimpleName(), tag, getTimeStamp()));
     }
 }
