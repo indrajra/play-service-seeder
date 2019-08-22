@@ -1,8 +1,8 @@
 package org.sunbird;
 
 import akka.actor.ActorRef;
-import org.sunbird.actor.core.ActorCache;
-import org.sunbird.actor.core.ActorService;
+import org.sunbird.akka.core.ActorCache;
+import org.sunbird.akka.core.ActorService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,6 @@ public class Application {
      * @return
      */
     public ActorRef getActorRef(String operation) {
-        return ActorCache.getActorRef(operation);
+        return ActorCache.get(operation);
     }
 }

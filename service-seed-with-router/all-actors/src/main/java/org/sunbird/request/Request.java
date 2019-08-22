@@ -1,7 +1,7 @@
 package org.sunbird.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.apache.commons.lang3.StringUtils;
+//import org.apache.commons.lang3.StringUtils;
 import org.sunbird.ActorServiceException;
 import org.sunbird.BaseException;
 import org.sunbird.message.IResponseMessage;
@@ -45,8 +45,8 @@ public class Request implements Serializable {
   public Request(Request request) {
     this.params = request.getParams();
     if (null == this.params) this.params = new RequestParams();
-    if (StringUtils.isBlank(this.params.getMsgid()) && !StringUtils.isBlank(requestId))
-      this.params.setMsgid(requestId);
+   // if (StringUtils.isBlank(this.params.getMsgid()) && !StringUtils.isBlank(requestId))
+    //  this.params.setMsgid(requestId);
     this.context.putAll(request.getContext());
   }
 

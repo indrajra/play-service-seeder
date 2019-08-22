@@ -55,7 +55,7 @@ public class ActorCache {
         remoteRoutingMap.put(absName, actor);
     }
 
-    public ActorRef get(String simpleName) {
+    public static ActorRef get(String simpleName) {
         return routingMap.get(simpleName);
     }
 
@@ -70,5 +70,10 @@ public class ActorCache {
         remoteRoutingMap.forEach((k,v) -> {
             System.out.println(k + " -> " + v);
         });
+    }
+    
+    public static Map<String, ActorRef> getActorCache() {
+    	return routingMap;
+    	
     }
 }
