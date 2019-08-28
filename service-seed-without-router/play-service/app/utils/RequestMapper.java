@@ -4,7 +4,9 @@
 package utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.log4j.Logger;
 import org.sunbird.ActorServiceException;
+import org.sunbird.BaseActor;
 import org.sunbird.BaseException;
 import org.sunbird.message.IResponseMessage;
 import org.sunbird.message.Localizer;
@@ -18,6 +20,8 @@ import play.libs.Json;
  */
 public class RequestMapper {
 
+    private static Logger logger = Logger.getLogger(BaseActor.class);
+
     /**
      * Method to map request
      *
@@ -27,7 +31,7 @@ public class RequestMapper {
      * @return <T>
      */
     public static <T> Object mapRequest(play.mvc.Http.Request req, Class<T> obj) throws BaseException {
-        //ProjectLogger.log("RequestMapper:mapRequest:Requested data:" + req, LoggerEnum.INFO.name());
+        logger.info("RequestMapper:mapRequest:Requested data:" + req);
         if (req == null) throw new ActorServiceException.InvalidRequestData(
                 IResponseMessage.INVALID_REQUESTED_DATA,
                 Localizer.getInstance().getMessage(IResponseMessage.INVALID_REQUESTED_DATA, null),
@@ -37,8 +41,8 @@ public class RequestMapper {
             requestData = req.body().asJson();
             return Json.fromJson(requestData, obj);
         } catch (Exception e) {
-//            ProjectLogger.log("RequestMapper:mapRequest: " + e.getMessage(), e);
-//            ProjectLogger.log("RequestMapper:mapRequest:Requested data " + requestData, LoggerEnum.INFO.name());
+            logger.error("RequestMapper:mapRequest: " + e.getMessage(), e);
+            logger.info("RequestMapper:mapRequest:Requested data " + requestData);
 
             throw new ActorServiceException.InvalidRequestData(
                     IResponseMessage.INVALID_REQUESTED_DATA,

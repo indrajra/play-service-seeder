@@ -2,11 +2,13 @@ package controllers;
 
 import akka.pattern.Patterns;
 import akka.util.Timeout;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.sunbird.BaseException;
 import org.sunbird.message.IResponseMessage;
 import org.sunbird.message.ResponseCode;
 import org.sunbird.request.Request;
 import org.sunbird.response.Response;
+import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Result;
 import play.mvc.Results;
@@ -98,8 +100,8 @@ public class RequestHandler extends BaseController {
      */
 
     public static CompletionStage<Result> handleSuccessResponse(Response response, HttpExecutionContext httpExecutionContext) {
-        CompletableFuture<String> future = new CompletableFuture<>();
-        future.complete(jsonify(response));
+        CompletableFuture<JsonNode> future = new CompletableFuture<>();
+        future.complete(Json.toJson(response));
         return future.thenApplyAsync(Results::ok, httpExecutionContext.current());
     }
 }

@@ -9,6 +9,8 @@ Use this for creating a play-based service that leverages all internal actors. B
 2. Use the same string in /all-actors/Application.java in the field `actorSystemName`
 3. Change the play secret key value in /play-service/application.conf - `play.http.secret.key`
 
+### Note
+1.In this Application , throw only org.sunbird.BaseException
 
 ### Build
 
