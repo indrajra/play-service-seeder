@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>play-seed-wo-router</artifactId>
+        <artifactId>play-seed-router</artifactId>
         <groupId>org.sunbird</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -15,10 +15,10 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.sunbird</groupId>
-            <artifactId>sb-actor</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+       <dependency>
+            <groupId>org.sunbird.akka</groupId>
+            <artifactId>sunbird-actor</artifactId>
+            <version>1.0.0</version>
+        </dependency>    
+   </dependencies>
 </project>
