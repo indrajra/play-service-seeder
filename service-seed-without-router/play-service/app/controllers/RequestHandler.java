@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class RequestHandler extends BaseController {
 
-    private static ObjectMapper mapper = new ObjectMapper();
     /**
      * this method is responsible to handle the request and ask from actor
      * this methis responsible to handle the request and ask from actor
