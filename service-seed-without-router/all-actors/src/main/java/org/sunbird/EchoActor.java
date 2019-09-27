@@ -5,11 +5,11 @@ import org.sunbird.request.Request;
 import org.sunbird.response.Response;
 
 @ActorConfig(
-        tasks = {"demo"},
+        tasks = {"echo"},
         dispatcher = "",
         asyncTasks = {}
 )
-public class DemoActor extends BaseActor {
+public class EchoActor extends BaseActor {
     @Override
     public void onReceive(Request request) throws Throwable {
         Response response = new Response();

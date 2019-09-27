@@ -3,6 +3,7 @@ package controllers;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sunbird.BaseException;
 import org.sunbird.message.IResponseMessage;
 import org.sunbird.message.ResponseCode;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RequestHandler extends BaseController {
 
+    private static ObjectMapper mapper = new ObjectMapper();
     /**
      * this method is responsible to handle the request and ask from actor
      * this methis responsible to handle the request and ask from actor
@@ -101,7 +103,8 @@ public class RequestHandler extends BaseController {
 
     public static CompletionStage<Result> handleSuccessResponse(Response response, HttpExecutionContext httpExecutionContext) {
         CompletableFuture<JsonNode> future = new CompletableFuture<>();
-        future.complete(Json.toJson(response));
-        return future.thenApplyAsync(Results::ok, httpExecutionContext.current());
+        future.complete(mapper.convertValue(response,JsonNode.class)/*Json.toJson(response)*/);
+        CompletionStage<Result> fut = future.thenApplyAsync(Results::ok, httpExecutionContext.current());
+        return fut;
     }
 }
