@@ -9,3 +9,6 @@ GET  /:service/health                      @controllers.health.HealthController.
 
 # Logs Management APIs
 # POST    /v1.3/system/log/update           @controllers.logsmanager.LogController.setLogLevel()
+
+GET  /echo/:id                                 @controllers.EchoController.echo(id:String)
+
