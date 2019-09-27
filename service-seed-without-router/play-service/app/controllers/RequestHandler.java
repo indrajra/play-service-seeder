@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class RequestHandler extends BaseController {
 
     /**
+     * this method is responsible to handle the request and ask from actor
      * this methis responsible to handle the request and ask from actor
      * @param request
      * @param httpExecutionContext
@@ -39,7 +40,6 @@ public class RequestHandler extends BaseController {
         Object obj;
         CompletableFuture<String> cf = new CompletableFuture<>();
         request.setOperation(operation);
-        //ProjectLogger.log(String.format("%s:%s:Requested operation %s",this.getClass().getSimpleName(),"handleRequest",operation), LoggerEnum.DEBUG.name());
         //startTrace("handleRequest");
         Timeout t = new Timeout(Long.valueOf(request.getTimeout()), TimeUnit.SECONDS);
         Future<Object> future = Patterns.ask(getActorRef(operation), request, t);

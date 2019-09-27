@@ -55,6 +55,29 @@ public class BaseController extends Controller {
     }
 
     /**
+     * this method will take org.sunbird.Request and a validation function and lastly operation(Actor operation)
+     * this method is validating the request and ,
+     * this method is used to handle all the request type which has requestBody
+     *
+     * @param request
+     * @param validatorFunction
+     * @param operation
+     * @return
+     */
+    public CompletionStage<Result> handleRequest(Request request, RequestValidatorFunction validatorFunction, String operation) {
+        try {
+            if (validatorFunction != null) {
+                validatorFunction.apply(request);
+            }
+            return new RequestHandler().handleRequest(request, httpExecutionContext, operation);
+        } catch (BaseException ex) {
+            return RequestHandler.handleFailureResponse(ex, httpExecutionContext);
+        } catch (Exception ex) {
+            return RequestHandler.handleFailureResponse(ex, httpExecutionContext);
+        }
+    }
+
+    /**
      * this method will take play.mv.http request and a validation function and lastly operation(Actor operation)
      * this method is validating the request and ,
      * it will map the request to our sunbird Request class and make a call to requestHandler which is internally calling ask to actor
@@ -77,7 +100,6 @@ public class BaseController extends Controller {
         } catch (Exception ex) {
             return RequestHandler.handleFailureResponse(ex, httpExecutionContext);
         }
-
     }
 
     /**
@@ -95,9 +117,9 @@ public class BaseController extends Controller {
         } catch (Exception ex) {
             return RequestHandler.handleFailureResponse(ex, httpExecutionContext);
         }
-
-
     }
+
+
 
     public CompletionStage<Result> handleRequest() {
         CompletableFuture<String> cf = new CompletableFuture<>();
