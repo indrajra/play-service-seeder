@@ -20,8 +20,7 @@ public class EchoController extends BaseController {
     public CompletionStage<Result> echo(String id) throws BaseException {
         Request request = new Request();
         request.put("id",id);
-        CompletionStage<Result> res = handleRequest(request,null,"echo");
-        return res;
+        return handleRequest(request,null,"echo");
     }
 
 }

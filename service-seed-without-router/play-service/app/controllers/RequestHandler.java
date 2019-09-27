@@ -103,8 +103,7 @@ public class RequestHandler extends BaseController {
 
     public static CompletionStage<Result> handleSuccessResponse(Response response, HttpExecutionContext httpExecutionContext) {
         CompletableFuture<JsonNode> future = new CompletableFuture<>();
-        future.complete(mapper.convertValue(response,JsonNode.class)/*Json.toJson(response)*/);
-        CompletionStage<Result> fut = future.thenApplyAsync(Results::ok, httpExecutionContext.current());
-        return fut;
+        future.complete(Json.toJson(response));
+        return future.thenApplyAsync(Results::ok, httpExecutionContext.current());
     }
 }
