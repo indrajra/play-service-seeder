@@ -39,7 +39,6 @@ public class BaseControllerTest {
   private org.sunbird.Application application;
   private static ActorRef actorRef;
   private static BaseController baseController;
-  //private OpenSaberApplication openSaberApplication;
 
   public BaseControllerTest() {
     baseControllerTestsetUp();
@@ -82,7 +81,7 @@ public class BaseControllerTest {
     response.put(JsonKey.MESSAGE, localizer.getMessage(IResponseMessage.INTERNAL_ERROR,null));
     String jsonifyResponse = controller.jsonify(response);
     assertEquals(
-            "{\"id\":null,\"ver\":null,\"ts\":null,\"params\":null,\"responseCode\":\"OK\",\"result\":{\"message\":\"Process failed,please try again later.\"}}", jsonifyResponse);
+            "{\"id\":null,\"ver\":null,\"ts\":null,\"params\":null,\"result\":{\"message\":\"Process failed,please try again later.\"},\"responseCode\":null}", jsonifyResponse);
   }
 
   @Test

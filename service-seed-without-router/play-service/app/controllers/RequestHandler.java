@@ -60,7 +60,7 @@ public class RequestHandler extends BaseController {
         CompletableFuture<String> future = new CompletableFuture<>();
         if (exception instanceof BaseException) {
             BaseException ex = (BaseException) exception;
-            response.setResponseCode(ResponseCode.BAD_REQUEST);
+            response.setResponseCode(ex.getCode());
             response.put(JsonKey.MESSAGE, ex.getMessage());
             future.complete(jsonify(response));
             if (ex.getResponseCode() == Results.badRequest().status()) {
@@ -69,7 +69,7 @@ public class RequestHandler extends BaseController {
                 return future.thenApplyAsync(Results::internalServerError, httpExecutionContext.current());
             }
         } else {
-            response.setResponseCode(ResponseCode.SERVER_ERROR);
+            response.setResponseCode(IResponseMessage.SERVER_ERROR);
             response.put(JsonKey.MESSAGE,localizerObject.getMessage(IResponseMessage.INTERNAL_ERROR,null));
             future.complete(jsonify(response));
             return future.thenApplyAsync(Results::internalServerError, httpExecutionContext.current());
