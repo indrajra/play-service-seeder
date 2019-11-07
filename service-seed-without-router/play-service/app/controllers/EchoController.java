@@ -2,6 +2,7 @@ package controllers;
 
 import org.sunbird.BaseException;
 import org.sunbird.request.Request;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import java.util.concurrent.CompletionStage;
@@ -17,10 +18,10 @@ public class EchoController extends BaseController {
      * @return CompletionStage of Result
      * @throws BaseException
      */
-    public CompletionStage<Result> echo(String id) throws BaseException {
+    public CompletionStage<Result> echo(String id,Http.Request req){
         Request request = new Request();
         request.put("id",id);
-        return handleRequest(request(),request,null,"echo");
+        return handleRequest(req,request,null,"echo");
     }
 
 }

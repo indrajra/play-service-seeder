@@ -111,27 +111,25 @@ public class RequestHandler extends BaseController {
     }
 
 
-    public static Response prepareFailureMessage( Object exception,play.mvc.Http.Request req){
+    /**
+     * this method will prepare the failure response of the API
+     * @param exception
+     * @param req
+     * @return
+     */
+    public static Response prepareFailureMessage(Object exception, play.mvc.Http.Request req) {
         Response response = new Response();
+        response.setId(getApiId(req.path()));
+        response.setVer(JsonKey.API_VERSION);
+        response.setTs(System.currentTimeMillis() + StringUtils.EMPTY);
         if (exception instanceof BaseException) {
             BaseException ex = (BaseException) exception;
             response.put(JsonKey.MESSAGE, ex.getMessage());
-            String apiId = getApiId(req.path());
-            response.setId(apiId);
-            response.setVer(JsonKey.API_VERSION);
-            response.setTs(System.currentTimeMillis() + StringUtils.EMPTY);
-            if (ex.getResponseCode() == Results.badRequest().status()) {
-                response.setResponseCode(ResponseCode.CLIENT_ERROR.getCode());}
-            else{
-                response.setResponseCode(ResponseCode.SERVER_ERROR.getCode());
-                response.put(
-                        JsonKey.MESSAGE, localizerObject.getMessage(IResponseMessage.INTERNAL_ERROR, null));
-            }
+            response.setResponseCode(ResponseCode.CLIENT_ERROR.getCode());
+            return response;
         }
-        else{
-            response.setResponseCode(ResponseCode.SERVER_ERROR.getCode());
-            response.put(JsonKey.MESSAGE,localizerObject.getMessage(IResponseMessage.INTERNAL_ERROR,null));
-        }
+        response.setResponseCode(ResponseCode.SERVER_ERROR.getCode());
+        response.put(JsonKey.MESSAGE, localizerObject.getMessage(IResponseMessage.INTERNAL_ERROR, null));
         return response;
     }
 }

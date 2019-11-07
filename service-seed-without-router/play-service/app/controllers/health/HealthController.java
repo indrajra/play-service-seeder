@@ -12,7 +12,7 @@ import play.mvc.Results;
  * @author Anmol
  */
 public class HealthController extends BaseController {
-  // Service name must be "service" for the devops monitoring.
+  // Service name must be "service" for the DevOps monitoring.
   private static final String service = "service";
 
   /**
