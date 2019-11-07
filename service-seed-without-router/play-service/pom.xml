@@ -32,14 +32,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-    <properties>
-        <play2.version>2.7.2</play2.version>
-        <play2.plugin.version>1.0.0-rc5</play2.plugin.version>
-        <sbt-compiler.plugin.version>1.0.0</sbt-compiler.plugin.version>
-        <scala.major.version>2.11</scala.major.version>
-        <scala.version>2.11.8</scala.version>
-        <learner.akka.version>2.5.19</learner.akka.version>
-    </properties>
 
     <dependencies>
         <!-- Don't move this dependency below play dependency otherwise it will
@@ -116,12 +108,12 @@
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-slf4j_${scala.major.version}</artifactId>
-            <version>${learner.akka.version}</version>
+            <version>${akka.x.version}</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-testkit_${scala.major.version}</artifactId>
-            <version>${learner.akka.version}</version>
+            <version>${akka.x.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
