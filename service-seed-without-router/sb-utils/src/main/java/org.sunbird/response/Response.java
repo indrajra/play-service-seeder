@@ -19,7 +19,7 @@ public class Response implements Serializable, Cloneable {
   private String ver;
   private String ts;
   private ResponseParams params;
-  private String code ;
+  private int code ;
   private Map<String, Object> result = new HashMap<>();
 
   /**
@@ -129,7 +129,7 @@ public class Response implements Serializable, Cloneable {
    *
    * @param code ResponseCode
    */
-  public void setResponseCode(String code) {
+  public void setResponseCode(int code) {
     this.code = code;
   }
 
@@ -138,7 +138,7 @@ public class Response implements Serializable, Cloneable {
    *
    * @return String
    */
-  public String getResponseCode() {
+  public int getResponseCode() {
     return this.code;
   }
 
