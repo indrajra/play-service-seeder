@@ -84,6 +84,7 @@ public class TestHelper extends WithApplication {
     Map<String, String[]> headerMap = new HashMap<>();
     headerMap.put("x-authenticated-user-token", new String[] {"Some authenticated user ID"});
     headerMap.put("Authorization", new String[] {"Bearer ...."});
+    headerMap.put("Content-Type", new String[] {"application/json"});
     return headerMap;
   }
 
