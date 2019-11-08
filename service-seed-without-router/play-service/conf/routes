@@ -4,11 +4,8 @@
 
 #Health check
 GET  /health                                  @controllers.health.HealthController.getHealth()
-GET  /:service/health                      @controllers.health.HealthController.getUserOrgServiceHealth(service:String)
+GET  /:service/health                      @controllers.health.HealthController.getServiceHealth(service:String, request: play.mvc.Http.Request)
 
 
 # Logs Management APIs
 # POST    /v1.3/system/log/update           @controllers.logsmanager.LogController.setLogLevel()
-
-GET  /echo/:id                                 @controllers.EchoController.echo(id:String,request: play.mvc.Http.Request)
-

@@ -19,7 +19,7 @@ public class Response implements Serializable, Cloneable {
   private String ver;
   private String ts;
   private ResponseParams params;
-  private int code ;
+  private int code=200;
   private Map<String, Object> result = new HashMap<>();
 
   /**
