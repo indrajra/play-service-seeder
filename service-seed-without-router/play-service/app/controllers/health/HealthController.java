@@ -3,6 +3,9 @@ package controllers.health;
 import controllers.BaseController;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+
+import org.sunbird.request.Request;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
 
@@ -12,7 +15,7 @@ import play.mvc.Results;
  * @author Anmol
  */
 public class HealthController extends BaseController {
-  // Service name must be "service" for the devops monitoring.
+  // Service name must be "service" for the DevOps monitoring.
   private static final String service = "service";
 
   /**
@@ -26,15 +29,13 @@ public class HealthController extends BaseController {
   }
 
   /**
-   * This action method is responsible to check user-service health
+   * This action method is responsible to check service health
    *
    * @return a CompletableFuture of success response
    */
-  public CompletionStage<Result> getUserOrgServiceHealth(String health) {
-    CompletableFuture<String> cf = new CompletableFuture<>();
-    cf.complete(dummyResponse);
-    return service.equalsIgnoreCase(health)
-        ? cf.thenApplyAsync(Results::ok)
-        : cf.thenApplyAsync(Results::badRequest);
+  public CompletionStage<Result> getServiceHealth(String serviceName, Http.Request req) {
+    Request request = new Request();
+    request.put("serviceName",serviceName);
+    return handleRequest(req,request,null,"health");
   }
 }

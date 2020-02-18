@@ -81,7 +81,7 @@ public class BaseControllerTest {
     response.put(JsonKey.MESSAGE, localizer.getMessage(IResponseMessage.INTERNAL_ERROR,null));
     String jsonifyResponse = controller.jsonify(response);
     assertEquals(
-            "{\"id\":null,\"ver\":null,\"ts\":null,\"params\":null,\"result\":{\"message\":\"Process failed,please try again later.\"},\"responseCode\":null}", jsonifyResponse);
+            "{\"id\":null,\"ver\":null,\"ts\":null,\"params\":null,\"result\":{\"message\":\"Process failed,please try again later.\"},\"responseCode\":200}", jsonifyResponse);
   }
 
   @Test

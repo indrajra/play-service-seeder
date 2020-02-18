@@ -42,7 +42,7 @@ public class TestHelper extends WithApplication {
     } else {
       req = new Http.RequestBuilder().uri(url).method(method);
     }
-    req.headers(headerMap);
+    req.header("Content-Type", "application/json");
     Result result = route(fakeApplication(), req);
     return result;
   }
@@ -84,6 +84,7 @@ public class TestHelper extends WithApplication {
     Map<String, String[]> headerMap = new HashMap<>();
     headerMap.put("x-authenticated-user-token", new String[] {"Some authenticated user ID"});
     headerMap.put("Authorization", new String[] {"Bearer ...."});
+    headerMap.put("Content-Type", new String[] {"application/json"});
     return headerMap;
   }
 
