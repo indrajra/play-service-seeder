@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 public abstract class BaseActor extends UntypedAbstractActor {
 
-    final DiagnosticLoggingAdapter log = Logging.getLogger(this);
+    final DiagnosticLoggingAdapter logger = Logging.getLogger(this);
 
     public abstract void onReceive(Request request) throws Throwable;
 
@@ -29,21 +29,21 @@ public abstract class BaseActor extends UntypedAbstractActor {
         Map<String, Object> mdc;
         mdc = new HashMap<>();
         mdc.put("requestId", UUID.randomUUID().toString());
-        log.setMDC(mdc);
+        logger.setMDC(mdc);
         if (message instanceof Request) {
             Request request = (Request) message;
             String operation = request.getOperation();
             try {
-                log.info(String.format("%s:%s:method started at %s", this.getClass().getSimpleName(), operation, System.currentTimeMillis()));
+                logger.info(String.format("%s:%s:method started at %s", this.getClass().getSimpleName(), operation, System.currentTimeMillis()));
                 onReceive(request);
-                log.info(String.format("%s:%s:method ended at %s", this.getClass().getSimpleName(), operation, System.currentTimeMillis()));
+                logger.info(String.format("%s:%s:method ended at %s", this.getClass().getSimpleName(), operation, System.currentTimeMillis()));
             } catch (Exception e) {
                 onReceiveException(operation, e);
             } finally {
-                log.clearMDC();
+                logger.clearMDC();
             }
         } else {
-            log.info("BaseActor: onReceive called with invalid type of request.");
+            logger.info("BaseActor: onReceive called with invalid type of request.");
         }
     }
 
@@ -55,7 +55,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @throws Exception
      */
     protected void onReceiveException(String callerName, Exception exception) throws Exception {
-//        logger.error("Exception in message processing for: " + callerName + " :: message: " + exception.getMessage(), exception);
+        logger.error("Exception in message processing for: " + callerName + " :: message: " + exception.getMessage(), exception);
         sender().tell(exception, self());
     }
 
@@ -66,7 +66,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @param callerName
      */
     protected void onReceiveUnsupportedMessage(String callerName) {
-//        logger.info(callerName + ": unsupported operation");
+        logger.info(callerName + ": unsupported operation");
         /**
          * TODO Need to replace null reference from getLocalized method and replace with requested local.
          */
@@ -106,7 +106,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @param tag
      */
     public void startTrace(String tag) {
-//        logger.info(String.format("%s:%s:started at %s", this.getClass().getSimpleName(), tag, getTimeStamp()));
+        logger.info(String.format("%s:%s:started at %s", this.getClass().getSimpleName(), tag, getTimeStamp()));
     }
 
     /**
@@ -115,6 +115,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
      * @param tag
      */
     public void endTrace(String tag) {
-//        logger.info(String.format("%s:%s:ended at %s", this.getClass().getSimpleName(), tag, getTimeStamp()));
+        logger.info(String.format("%s:%s:ended at %s", this.getClass().getSimpleName(), tag, getTimeStamp()));
     }
 }

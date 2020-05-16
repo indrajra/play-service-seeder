@@ -22,16 +22,16 @@ public class HealthActor extends BaseActor {
             Map<String, Object> mdc;
             mdc = new HashMap<>();
             mdc.put("requestId",uuid );
-            log.setMDC(mdc);
-            log.info("onReceive method call started {}", request.toString());
+            logger.setMDC(mdc);
+            logger.info("onReceive method call started {}", request.toString());
 
             Response response = new Response();
             response.put("Response",request.getRequest());
             response.put("healthy",true);
-            log.info("onReceive method call End ");
+            logger.info("onReceive method call End ");
             sender().tell(response,self());
         } finally {
-            log.clearMDC();
+            logger.clearMDC();
         }
 
     }
