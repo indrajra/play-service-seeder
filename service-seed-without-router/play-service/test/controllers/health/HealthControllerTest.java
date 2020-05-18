@@ -9,7 +9,6 @@ import play.Application;
 import play.mvc.Result;
 import play.test.Helpers;
 
-import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,13 +39,13 @@ public class HealthControllerTest extends BaseControllerTest {
         Map<String, Object> reqMap = new HashMap<>();
         reqMap.put("accept", "yes");
         Result result = testHelper.performTest("/health", "GET", reqMap, headerMap);
-        assertTrue(testHelper.getResponseStatus(result) == Response.Status.OK.getStatusCode());
+        assertTrue(testHelper.getResponseStatus(result) == 200);
     }
     @Test
     public void testGetHealthFailure() {
         Map<String, Object> reqMap = new HashMap<>();
         reqMap.put("accept", "yes");
         Result result = testHelper.performTest("/health", "POST", reqMap, headerMap);
-        assertTrue(testHelper.getResponseStatus(result) == Response.Status.NOT_FOUND.getStatusCode());
+        assertTrue(testHelper.getResponseStatus(result) == 404);
     }
 }
