@@ -26,21 +26,18 @@ public abstract class BaseActor extends UntypedAbstractActor {
 
     @Override
     public void onReceive(Object message) throws Throwable {
-        Map<String, Object> mdc;
-        mdc = new HashMap<>();
+        Map<String, Object> mdc = new HashMap<>();
         mdc.put("requestId", UUID.randomUUID().toString());
         logger.setMDC(mdc);
         if (message instanceof Request) {
             Request request = (Request) message;
             String operation = request.getOperation();
             try {
-                logger.info(String.format("%s:%s:method started at %s", this.getClass().getSimpleName(), operation, System.currentTimeMillis()));
+                logger.info("Started : operation {}", operation);
                 onReceive(request);
-                logger.info(String.format("%s:%s:method ended at %s", this.getClass().getSimpleName(), operation, System.currentTimeMillis()));
+                logger.info("Ended : operation {}", operation);
             } catch (Exception e) {
                 onReceiveException(operation, e);
-            } finally {
-                logger.clearMDC();
             }
         } else {
             logger.info("BaseActor: onReceive called with invalid type of request.");
