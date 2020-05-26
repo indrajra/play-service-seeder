@@ -26,15 +26,16 @@ public abstract class BaseActor extends UntypedAbstractActor {
 
     @Override
     public void onReceive(Object message) throws Throwable {
-        Map<String, Object> mdc = new HashMap<>();
-        mdc.put("reqId", UUID.randomUUID().toString());
-        logger.setMDC(mdc);
+        Map<String, Object> trace = new HashMap<>();
+        trace.put("reqId", UUID.randomUUID().toString());
+        logger.setMDC(trace);
         if (message instanceof Request) {
             Request request = (Request) message;
             String operation = request.getOperation();
             try {
                 logger.info("Started : operation {}", operation);
                 onReceive(request);
+                new HelloWord(logger.getMDC()).printHello();
                 logger.info("Ended : operation {}", operation);
             } catch (Exception e) {
                 logger.error("Exception : operation {} : message : {} {}", operation, e.getMessage(), e);
