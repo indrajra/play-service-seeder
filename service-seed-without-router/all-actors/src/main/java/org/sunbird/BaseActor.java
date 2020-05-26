@@ -27,7 +27,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
     @Override
     public void onReceive(Object message) throws Throwable {
         Map<String, Object> mdc = new HashMap<>();
-        mdc.put("requestId", UUID.randomUUID().toString());
+        mdc.put("reqId", UUID.randomUUID().toString());
         logger.setMDC(mdc);
         if (message instanceof Request) {
             Request request = (Request) message;
