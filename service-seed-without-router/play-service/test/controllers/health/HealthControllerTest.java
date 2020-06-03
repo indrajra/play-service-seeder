@@ -8,7 +8,6 @@ import org.junit.Test;
 import play.Application;
 import play.mvc.Result;
 import play.test.Helpers;
-
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
