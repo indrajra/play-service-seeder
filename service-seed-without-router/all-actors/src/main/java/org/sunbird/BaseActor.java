@@ -7,6 +7,7 @@ import org.sunbird.message.IResponseMessage;
 import org.sunbird.message.Localizer;
 import org.sunbird.message.ResponseCode;
 import org.sunbird.request.Request;
+import org.sunbird.response.Response;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -35,7 +36,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
             try {
                 logger.info("Started : operation {}", operation);
                 onReceive(request);
-                new HelloWord(logger.getMDC()).printHello();
+                //new HelloWord(logger.getMDC()).printHello();
                 logger.info("Ended : operation {}", operation);
             } catch (Exception e) {
                 logger.error("Exception : operation {} : message : {} {}", operation, e.getMessage(), e);
@@ -44,7 +45,8 @@ public abstract class BaseActor extends UntypedAbstractActor {
                 logger.clearMDC();
             }
         } else {
-            logger.info(" onReceive called with invalid type of request.");
+            Response res = (Response) message;
+            logger.info(" onReceive called with invalid type of request " + res.getId());
         }
     }
 
