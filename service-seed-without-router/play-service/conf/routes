@@ -3,9 +3,9 @@
 # ~~~~
 
 #Health check
-GET  /health                                  @controllers.health.HealthController.getHealth()
-GET  /:service/health                      @controllers.health.HealthController.getServiceHealth(service:String, request: play.mvc.Http.Request)
-
+GET  /health                                  @controllers.HealthController.getHealth()
+GET  /:service/health                      @controllers.HealthController.getServiceHealth(service:String, request: play.mvc.Http.Request)
+POST /exception                              @controllers.BadTestController.throwException(request: play.mvc.Http.Request)
 
 # Logs Management APIs
 # POST    /v1.3/system/log/update           @controllers.logsmanager.LogController.setLogLevel()

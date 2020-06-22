@@ -1,6 +1,7 @@
-package org.sunbird;
+package org.sunbird.actors;
 
 import akka.actor.ActorRef;
+import org.sunbird.Application;
 import org.sunbird.actor.core.ActorConfig;
 import org.sunbird.request.Request;
 import org.sunbird.response.Response;
@@ -8,7 +9,7 @@ import org.sunbird.response.Response;
 
 @ActorConfig(
         tasks = {"health"},
-        dispatcher = "",
+        dispatcher = "user-dispatcher",
         asyncTasks = {}
 )
 public class HealthActor extends BaseActor {
@@ -22,10 +23,6 @@ public class HealthActor extends BaseActor {
         Response response = new Response();
         response.put("Response", request.getRequest());
         response.put("healthy", true);
-        logger.info("onReceive method call End ");
-
-        response.setId("healthId");
-        sender().tell(response, self());
 
         if (null != appleActor) {
             request.setOperation("apple");
@@ -33,5 +30,9 @@ public class HealthActor extends BaseActor {
         } else {
             logger.info("Can't talk to apple actor");
         }
+
+        response.setId("healthId");
+        logger.info("onReceive method call - akkadlog1");
+        sender().tell(response, self());
     }
 }

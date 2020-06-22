@@ -1,6 +1,5 @@
 package org.sunbird.message;
 
-/** @author Manzarul */
 public enum ResponseCode {
   OK(200),
   CLIENT_ERROR(400),

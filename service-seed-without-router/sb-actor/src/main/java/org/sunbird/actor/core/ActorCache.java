@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * This class will maintain the cache of actor reference.
  * NOTE:: Today does not handle remote actor references
- * @author Amit Kumar
  */
 public class ActorCache {
 

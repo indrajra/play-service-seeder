@@ -6,7 +6,7 @@
             <level>INFO</level>
         </filter>
         <encoder>
-            <pattern>[%date{ISO8601}] [%level] %logger{36}:%line [%marker] [%thread] [%mdc{reqId}] - %msg %n
+            <pattern>[%date{ISO8601}] [%level] %logger{36}:%line [%mdc{msgId}] - %msg %n
             </pattern>
             <!--to print whole Mapped Diagnostic Context (MDC) properties( for eg: the actor’s path, the full address of the ActorSystem) in the logs  refer this link https://doc.akka.io/docs/akka/current/typed/logging.html#mdc-->
             <!--[%mdc] will print all akka variables akkaSource, akkaAddress, akkaTags, sourceActorSystem. for more info refer this link https://doc.akka.io/docs/akka/current/typed/logging.html#mdc-values-->
@@ -22,7 +22,7 @@
             <fileNamePattern>app_%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
-            <pattern>[%date{ISO8601}] [%level] %logger{36}:%line [%marker] [%thread] [%mdc{reqId}] - %msg %n
+            <pattern>[%date{ISO8601}] [%level] %logger{36}:%line [%thread] [%mdc{msgId}] - %msg %n
             </pattern>
         </encoder>
     </appender>
@@ -33,7 +33,7 @@
         <appender-ref ref="FILE"/>
     </appender>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ASYNC"/>
     </root>

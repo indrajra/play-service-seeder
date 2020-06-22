@@ -22,7 +22,7 @@ public class HelloWord {
      * @param trace
      */
     public HelloWord(Map<String, Object> trace) {
-        MDC.put("reqId", (String) trace.get("reqId"));
+        MDC.put("msgId", (String) trace.get("msgId"));
     }
 
 

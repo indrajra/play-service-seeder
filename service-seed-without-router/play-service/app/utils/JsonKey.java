@@ -3,7 +3,6 @@ package utils;
 /**
  * This interface will contains all the constants that's used throughout this application and shared between User and Org module.
  *
- * @author Manzarul
  */
 public interface JsonKey {
 

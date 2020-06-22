@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 
-/** @author rayulu */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestParams implements Serializable {
 

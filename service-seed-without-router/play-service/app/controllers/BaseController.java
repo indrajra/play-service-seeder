@@ -1,25 +1,34 @@
 package controllers;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.function.Function;
-import javax.inject.Inject;
-
 import akka.actor.ActorRef;
+import akka.pattern.Patterns;
+import akka.util.Timeout;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.ActorServiceException;
 import org.sunbird.Application;
 import org.sunbird.BaseException;
+import org.sunbird.message.IResponseMessage;
 import org.sunbird.message.Localizer;
+import org.sunbird.message.ResponseCode;
 import org.sunbird.request.Request;
+import org.sunbird.response.ResponseFactory;
 import play.libs.Json;
-import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Results;
-import utils.JsonKey;
-import utils.RequestMapper;
+import scala.compat.java8.FutureConverters;
+import scala.concurrent.Future;
 import utils.RequestValidatorFunction;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import static controllers.ResponseHandler.handleResponse;
 
 /**
  * This controller we can use for writing some common method to handel api request.
@@ -28,32 +37,22 @@ import utils.RequestValidatorFunction;
  * its completion. CompletionStage: A stage of a possibly asynchronous computation, that performs an
  * action or computes a value when another CompletionStage completes
  *
- * @author Anmol
  */
 public class BaseController extends Controller {
+    private static final int WAIT_TIME_VALUE = 30;
+    protected ObjectMapper mapper = new ObjectMapper();
 
-    protected static ObjectMapper mapper = new ObjectMapper();
-    protected static final String dummyResponse =
-            "{\"id\":\"api.200ok\",\"ver\":\"v1\",\"ts\":\"2019-01-17 16:53:26:286+0530\",\"params\":{\"resmsgid\":null,\"msgid\":\"8e27cbf5-e299-43b0-bca7-8347f7ejk5abcf\",\"err\":null,\"status\":\"success\",\"errmsg\":null},\"responseCode\":\"OK\",\"result\":{\"response\":{\"response\":\"SUCCESS\",\"errors\":[]}}}";
-
-    /**
-     * We injected HttpExecutionContext to decrease the response time of APIs.
-     */
-    @Inject
-    private HttpExecutionContext httpExecutionContext;
-    protected static Localizer localizerObject = Localizer.getInstance();
-
-    /**
-     * This method will return the current timestamp.
-     *
-     * @return long
-     */
-    public long getTimeStamp() {
-        return System.currentTimeMillis();
+    public Integer getTimeout() {
+        return WAIT_TIME_VALUE;
     }
 
-    protected ActorRef getActorRef(String operation) throws BaseException {
+    protected ActorRef getActorRef(String operation) {
         return Application.getInstance().getActorRef(operation);
+    }
+
+    protected boolean validate(Request request) {
+        // All controllers can validate this.
+        return false;
     }
 
     /**
@@ -62,112 +61,64 @@ public class BaseController extends Controller {
      * this method is used to handle all the request type which has requestBody
      *
      * @param request
-     * @param validatorFunction
-     * @param operation
      * @return
      */
-    public CompletionStage<Result> handleRequest(play.mvc.Http.Request req,Request request, RequestValidatorFunction validatorFunction, String operation) {
+    public CompletionStage<Result> handleRequest(Request request) {
         try {
-            if (validatorFunction != null) {
-                validatorFunction.apply(request);
-            }
-            return new RequestHandler().handleRequest(request, httpExecutionContext, operation,req);
-        } catch (BaseException ex) {
-            return CompletableFuture.supplyAsync(() -> StringUtils.EMPTY)
-                    .thenApply(result -> badRequest(Json.toJson(RequestHandler.prepareFailureMessage(ex,req))));
+            validate(request);
+            return invoke(request);
         } catch (Exception ex) {
             return CompletableFuture.supplyAsync(() -> StringUtils.EMPTY)
-                    .thenApply(result -> internalServerError(Json.toJson(RequestHandler.prepareFailureMessage(ex,req))));        }
-    }
-
-    /**
-     * this method will take play.mv.http request and a validation function and lastly operation(Actor operation)
-     * this method is validating the request and ,
-     * it will map the request to our sunbird Request class and make a call to requestHandler which is internally calling ask to actor
-     * this method is used to handle all the request type which has requestBody
-     *
-     * @param req
-     * @param validatorFunction
-     * @param operation
-     * @return
-     */
-    public CompletionStage<Result> handleRequest(play.mvc.Http.Request req, RequestValidatorFunction validatorFunction, String operation) {
-        try {
-            Request request = (Request) RequestMapper.mapRequest(req, Request.class);
-            if (validatorFunction != null) {
-                validatorFunction.apply(request);
-            }
-            return new RequestHandler().handleRequest(request, httpExecutionContext, operation,req);
-        } catch (BaseException ex) {
-            return CompletableFuture.supplyAsync(() -> StringUtils.EMPTY)
-                    .thenApply(result -> badRequest(Json.toJson(RequestHandler.prepareFailureMessage(ex,req))));
-        } catch (Exception ex) {
-            return CompletableFuture.supplyAsync(() -> StringUtils.EMPTY)
-                    .thenApply(result -> internalServerError(Json.toJson(RequestHandler.prepareFailureMessage(ex,req))));
+                    .thenApply(result -> internalServerError(Json.toJson(ResponseFactory.getFailureMessage(ex, request))));
         }
     }
 
-
-    public CompletionStage<Result> handleRequest() {
-        CompletableFuture<String> cf = new CompletableFuture<>();
-        cf.complete(dummyResponse);
-        return cf.thenApplyAsync(Results::ok);
-    }
-
     /**
-     * This method is used specifically to handel Log Apis request this will set log levels and then
-     * return the CompletionStage of Result
+     * Responsible to handle the request and ask from actor
      *
-     * @return
+     * @param request
+     * @return CompletionStage<Result>
+     * @throws Exception
      */
-    public CompletionStage<Result> handleLogRequest() {
-//        startTrace("handleLogRequest");
-//        Response response = new Response();
-//        Request request = null;
-//        try {
-//            request = (Request) RequestMapper.mapRequest(request(), Request.class);
-//        } catch (Exception ex) {
-//            ProjectLogger.log(String.format("%s:%s:exception occurred in mapping request", this.getClass().getSimpleName(), "handleLogRequest"), LoggerEnum.ERROR.name());
-//            return RequestHandler.handleFailureResponse(ex, httpExecutionContext);
-//        }
-//
-//        if (LogValidator.isLogParamsPresent(request)) {
-//            if (LogValidator.isValidLogLevelPresent((String) request.get(JsonKey.LOG_LEVEL))) {
-//                ProjectLogger.setUserOrgServiceProjectLogger(
-//                        (String) request.get(JsonKey.LOG_LEVEL));
-//                response.put(JsonKey.ERROR, false);
-//                response.put(
-//                        JsonKey.MESSAGE,
-//                        "Log Level successfully set to " + request.get(JsonKey.LOG_LEVEL));
-//            } else {
-//                List<Enum> supportedLogLevelsValues = new ArrayList<>(EnumSet.allOf(LoggerEnum.class));
-//                response.put(JsonKey.ERROR, true);
-//                response.put(
-//                        JsonKey.MESSAGE,
-//                        "Valid Log Levels are " + Arrays.asList(supportedLogLevelsValues.toArray()));
-//            }
-//        } else {
-//            response.put(JsonKey.ERROR, true);
-//            response.put(
-//                    JsonKey.MESSAGE, "Missing Mandatory Request Param " + JsonKey.LOG_LEVEL);
-//        }
-
-        CompletableFuture<String> cf = new CompletableFuture<>();
-        cf.complete(dummyResponse);
-        return cf.thenApplyAsync(Results::ok);
-    }
-
-    /**
-     * This method is responsible to convert Response object into json
-     *
-     * @param response
-     * @return string
-     */
-    public static String jsonify(Object response) {
-        try {
-            return mapper.writeValueAsString(response);
-        } catch (Exception e) {
-            return JsonKey.EMPTY_STRING;
+    public CompletionStage<Result> invoke(Request request) throws Exception {
+        if (request == null) {
+            handleResponse(new ActorServiceException.InvalidRequestData(), request);
         }
+
+        Function<Object, Result> fn =
+                new Function<Object, Result>() {
+                    @Override
+                    public Result apply(Object object) {
+                        return handleResponse(object, request);
+                    }
+                };
+        long timeout = request.getTimeout() != null ? request.getTimeout() : getTimeout();
+        Timeout t = new Timeout(timeout, TimeUnit.SECONDS);
+
+        ActorRef actorRef = getActorRef(request.getOperation());
+        if (actorRef != null) {
+            Future<Object> future = Patterns.ask(actorRef, request, t);
+            return FutureConverters.toJava(future).thenApplyAsync(fn);
+        } else {
+            return CompletableFuture.supplyAsync(() -> handleResponse(new ActorServiceException.InvalidOperationName(null), request));
+        }
+    }
+
+    public Request createSBRequest(play.mvc.Http.Request httpReq) {
+        Request request = null;
+        // Copy body
+        JsonNode requestData = httpReq.body().asJson();
+        if (requestData.isMissingNode()) {
+            requestData = JsonNodeFactory.instance.objectNode();
+        }
+
+        // Copy headers
+        ObjectNode headerData = Json.mapper().valueToTree(httpReq.getHeaders().toMap());
+        ((ObjectNode) requestData).set("headers", headerData);
+
+        request = Json.fromJson(requestData, Request.class);
+        request.setPath(httpReq.path());
+
+        return request;
     }
 }

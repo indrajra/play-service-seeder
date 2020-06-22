@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * This class will contains response envelop.
  *
- * @author Manzarul
  */
 public class ResponseParams implements Serializable {
 

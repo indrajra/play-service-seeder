@@ -16,7 +16,6 @@ import java.util.Set;
 
 /**
  * This class contains method to instantiate actor system and actors.
- * @author Amit Kumar
  */
 public class ActorService {
 

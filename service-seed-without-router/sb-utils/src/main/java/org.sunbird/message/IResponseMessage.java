@@ -3,13 +3,10 @@ package org.sunbird.message;
 /**
  * This interface will hold all the response key and message
  *
- * @author Amit Kumar
  */
-public interface IResponseMessage extends IUserResponseMessage, IOrgResponseMessage {
+public interface IResponseMessage {
 
   String INVALID_REQUESTED_DATA = "INVALID_REQUESTED_DATA";
-  String SERVER_ERROR = "SERVER_ERROR";
   String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
   String INTERNAL_ERROR = "INTERNAL_ERROR";
-  String UNAUTHORIZED = "UNAUTHORIZED";
 }

@@ -1,16 +1,12 @@
 package org.sunbird.response;
 
-import org.sunbird.message.ResponseCode;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * This is a common response class for all the layer. All layer will send same response object.
  *
- * @author Manzarul
  */
 public class Response implements Serializable, Cloneable {
 

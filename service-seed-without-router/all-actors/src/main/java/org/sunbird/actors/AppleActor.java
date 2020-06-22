@@ -1,10 +1,9 @@
-package org.sunbird;
+package org.sunbird.actors;
 
 import org.sunbird.actor.core.ActorConfig;
 import org.sunbird.request.Request;
 import org.sunbird.response.Response;
 
-import javax.swing.text.DefaultEditorKit;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;

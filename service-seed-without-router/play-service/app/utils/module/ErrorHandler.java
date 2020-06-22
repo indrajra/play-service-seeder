@@ -1,19 +1,9 @@
 package utils.module;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-
+import com.typesafe.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sunbird.response.Response;
-
-import com.typesafe.config.Config;
-
 import play.Environment;
 import play.api.OptionalSourceMapper;
 import play.api.routing.Router;
@@ -23,9 +13,15 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+
 /**
  * This class will be called when exception is not handle by application.
- * @author manzarul
+ *
  */
 
 @Singleton

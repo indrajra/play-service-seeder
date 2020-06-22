@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.sunbird</groupId>
         <artifactId>play-seed-wo-router</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>play-service</artifactId>
     <name>play-service</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>play2</packaging>
 
     <repositories>

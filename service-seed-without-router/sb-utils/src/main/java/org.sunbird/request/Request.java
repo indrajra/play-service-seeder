@@ -1,57 +1,41 @@
 package org.sunbird.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.apache.commons.lang3.StringUtils;
-import org.sunbird.ActorServiceException;
 import org.sunbird.BaseException;
-import org.sunbird.message.IResponseMessage;
-import org.sunbird.message.Localizer;
-import org.sunbird.message.ResponseCode;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
-/** @author Manzarul */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Request implements Serializable {
 
   private static final long serialVersionUID = -2362783406031347676L;
-  private static final Integer MIN_TIMEOUT = 0;
-  private static final Integer MAX_TIMEOUT = 30;
-  private static final int WAIT_TIME_VALUE = 30;
 
-  protected Map<String, Object> context;
   private String id;
   private String ver;
   private String ts;
   private RequestParams params;
-
-  private Map<String, Object> request = new HashMap<>();
-
-  private String managerName;
   private String operation;
   private String requestId;
-  private int env;
+  private Map<String, Object> request = new WeakHashMap<>();
+  private Map<String, Object> headers = new WeakHashMap<>();
 
   private Integer timeout; // in seconds
 
+  protected Map<String, Object> context = new WeakHashMap<>();
+  protected String path;
+
   public Request() {
     this.params = new RequestParams();
-    this.params.setMsgid(requestId);
   }
 
-
-  public Request(Request request) {
-    this.params = request.getParams();
-    if (null == this.params) this.params = new RequestParams();
-    if (StringUtils.isBlank(this.params.getMsgid()) && !StringUtils.isBlank(requestId))
-      this.params.setMsgid(requestId);
-    this.context.putAll(request.getContext());
+  public Request(String operation) {
+    this.params = new RequestParams();
+    setOperation(operation);
   }
 
   public String getRequestId() {
-    if (null != this.params) return this.params.getMsgid();
     return requestId;
   }
 
@@ -82,14 +66,6 @@ public class Request implements Serializable {
 
   public void put(String key, Object vo) {
     request.put(key, vo);
-  }
-
-  public String getManagerName() {
-    return managerName;
-  }
-
-  public void setManagerName(String managerName) {
-    this.managerName = managerName;
   }
 
   public String getOperation() {
@@ -147,27 +123,27 @@ public class Request implements Serializable {
     if (this.params.getMsgid() == null && requestId != null) this.params.setMsgid(requestId);
   }
 
-  /** @return the env */
-  public int getEnv() {
-    return env;
-  }
-
-  /** @param env the env to set */
-  public void setEnv(int env) {
-    this.env = env;
-  }
-
   public Integer getTimeout() {
-    return timeout == null ? WAIT_TIME_VALUE : timeout;
+    return timeout;
   }
 
   public void setTimeout(Integer timeout) throws BaseException {
-    if (timeout < MIN_TIMEOUT && timeout > MAX_TIMEOUT) {
-      throw new ActorServiceException.InvalidRequestTimeout(
-              IResponseMessage.INVALID_OPERATION_NAME,
-              Localizer.getInstance().getMessage(IResponseMessage.INVALID_OPERATION_NAME,null),
-              ResponseCode.CLIENT_ERROR.getCode());
-    }
     this.timeout = timeout;
+  }
+
+  public Map<String, Object> getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(Map<String, Object> headers) {
+    this.headers = headers;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }
 }

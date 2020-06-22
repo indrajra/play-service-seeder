@@ -3,9 +3,6 @@ package org.sunbird.message;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- * @author Amit Kumar
- */
 public class Localizer {
 
     ResourceBundle userResourceBundle = null;

@@ -1,9 +1,5 @@
 package org.sunbird;
 
-
-/**
- * @author  Amit Kumar
- */
 public class BaseException extends Exception {
 
     private static final long serialVersionUID = 1L;
@@ -70,5 +66,11 @@ public class BaseException extends Exception {
         this.code = code;
         this.message = message;
         this.responseCode = responseCode;
+    }
+
+    public BaseException(String code, String message) {
+        super();
+        this.code = code;
+        this.message = message;
     }
 }

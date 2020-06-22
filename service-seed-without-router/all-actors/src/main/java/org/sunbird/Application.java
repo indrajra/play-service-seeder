@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this class is used to instantiate the actor system and open saber.
- * @author Amit Kumar
+ * this class is used to instantiate the actor system.
+ *
  */
 public class Application {
     private final static String actorSystemName = "thisActorSystem";

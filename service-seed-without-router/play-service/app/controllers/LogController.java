@@ -1,9 +1,4 @@
-package controllers.log;
-
-import controllers.BaseController;
-import play.mvc.Result;
-
-import java.util.concurrent.CompletionStage;
+package controllers;
 
 /** This controller is responsible to manage the dynamic configuration of Logs */
 public class LogController extends BaseController {
@@ -13,7 +8,8 @@ public class LogController extends BaseController {
    *
    * @return
    */
-  public CompletionStage<Result> setLogLevel() {
-    return handleLogRequest();
-  }
+  // TODO: Add dynamic log control api
+//  public CompletionStage<Result> setLogLevel() {
+//    return handleRequest();
+//  }
 }
