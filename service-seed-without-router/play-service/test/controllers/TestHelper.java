@@ -1,28 +1,21 @@
 package controllers;
 
+import static play.test.Helpers.route;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Map;
+import java.util.WeakHashMap;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import play.Application;
 import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.Helpers;
-import play.test.WithApplication;
 import utils.JsonKey;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.WeakHashMap;
-
-import static play.test.Helpers.route;
-
-/**
- * This a helper class for All the Controllers Test
- *
- */
+/** This a helper class for All the Controllers Test */
 public class TestHelper {
   // One and only app
   private static Application app = Helpers.fakeApplication();
@@ -89,5 +82,4 @@ public class TestHelper {
   public int getResponseStatus(Result result) {
     return result.status();
   }
-
 }
