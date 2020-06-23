@@ -15,15 +15,6 @@ public class ActorServiceException {
     }
   }
 
-  public static class InvalidRequestTimeout extends BaseException {
-    public InvalidRequestTimeout() {
-      super(
-          IResponseMessage.INVALID_REQUESTED_DATA,
-          Localizer.getInstance().getMessage(IResponseMessage.INVALID_REQUESTED_DATA, null),
-          500);
-    }
-  }
-
   public static class InvalidRequestData extends BaseException {
     public InvalidRequestData() {
       super(

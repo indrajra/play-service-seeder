@@ -14,7 +14,7 @@ import org.sunbird.response.Response;
 import play.mvc.Result;
 import utils.JsonKey;
 
-public class BaseControllerTest extends CommonHelperTest {
+public class BaseControllerTest extends TestHelper {
   Localizer localizer = Localizer.getInstance();
 
   public static String jsonify(Object response) {

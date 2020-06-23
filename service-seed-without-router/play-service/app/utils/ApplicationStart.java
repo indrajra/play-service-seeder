@@ -1,6 +1,5 @@
 package utils;
 
-import com.typesafe.config.Config;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,7 +18,7 @@ public class ApplicationStart {
    * @param lifecycle ApplicationLifecycle
    */
   @Inject
-  public ApplicationStart(Config config, ApplicationLifecycle lifecycle) {
+  public ApplicationStart(ApplicationLifecycle lifecycle) {
     // instantiate actor system and initialize all the actors
     Application.getInstance().init();
     // Shut-down hook

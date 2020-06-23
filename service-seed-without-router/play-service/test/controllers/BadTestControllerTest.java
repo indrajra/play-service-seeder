@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 import play.mvc.Result;
 
-public class BadTestControllerTest extends CommonHelperTest {
+public class BadTestControllerTest extends TestHelper {
   @Test
   public void testPostClientExceptionPasses() {
     Result result = performTest("/exception", "POST", null, headerMap);
@@ -18,8 +18,9 @@ public class BadTestControllerTest extends CommonHelperTest {
 
   @Test
   public void testPostServerExceptionPasses() {
-    Map<String, String> reqMap = new WeakHashMap<>();
+    Map<String, Object> reqMap = new WeakHashMap<>();
     reqMap.put("operation", "unknownOperation");
+    reqMap.put("timeout", 10);
     Result result = performTest("/exception", "POST", reqMap, headerMap);
     assertTrue(getResponseStatus(result) == Response.Status.fromStatusCode(500).getStatusCode());
   }
