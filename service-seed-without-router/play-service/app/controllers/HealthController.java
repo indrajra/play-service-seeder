@@ -1,15 +1,11 @@
 package controllers;
 
+import java.util.concurrent.CompletionStage;
 import org.sunbird.request.Request;
 import play.mvc.Http;
 import play.mvc.Result;
 
-import java.util.concurrent.CompletionStage;
-
-/**
- * This controller class will responsible to check health of the services.
- *
- */
+/** This controller class will responsible to check health of the services. */
 public class HealthController extends BaseController {
   // Service name must be "service" for the DevOps monitoring.
   private static final String service = "service";
@@ -36,7 +32,9 @@ public class HealthController extends BaseController {
    */
   public CompletionStage<Result> getServiceHealth(String serviceName, Http.Request req) {
     Request request = createSBRequest(req);
-    request.getContext().put("service", serviceName);
+    if (service.equals(serviceName)) {
+      request.getContext().put("service", serviceName);
+    }
     request.setOperation("health");
     return handleRequest(request);
   }

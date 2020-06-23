@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.WeakHashMap;
 import org.apache.commons.lang3.StringUtils;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import play.Application;
 import play.libs.Json;
 import play.mvc.Http;
@@ -16,7 +18,8 @@ import play.test.Helpers;
 import utils.JsonKey;
 
 /** This a helper class for All the Controllers Test */
-public class TestHelper {
+@PrepareForTest({org.sunbird.Application.class, Application.class})
+public class CommonHelperTest {
   // One and only app
   private static Application app = Helpers.fakeApplication();
 
@@ -26,7 +29,7 @@ public class TestHelper {
   // Only for derivations
   protected Map<String, String> headerMap;
 
-  public TestHelper() {
+  public CommonHelperTest() {
     headerMap = new WeakHashMap<>();
     headerMap.put(JsonKey.VER, "1.0");
     headerMap.put(JsonKey.ID, "api.test.id");
@@ -53,6 +56,13 @@ public class TestHelper {
     req.header("Content-Type", "application/json");
     Result result = route(app, req);
     return result;
+  }
+
+  protected final void setupMock() {
+    org.sunbird.Application application = PowerMockito.mock(org.sunbird.Application.class);
+    PowerMockito.mockStatic(org.sunbird.Application.class);
+    PowerMockito.when(org.sunbird.Application.getInstance()).thenReturn(application);
+    application.init();
   }
 
   /**

@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 import play.mvc.Result;
 
-public class BadTestControllerTest extends TestHelper {
+public class BadTestControllerTest extends CommonHelperTest {
   @Test
   public void testPostClientExceptionPasses() {
     Result result = performTest("/exception", "POST", null, headerMap);

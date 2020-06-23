@@ -104,7 +104,7 @@ public class BaseController extends Controller {
     Request request = null;
     // Copy body
     JsonNode requestData = httpReq.body().asJson();
-    if (requestData.isMissingNode()) {
+    if (requestData == null || requestData.isMissingNode()) {
       requestData = JsonNodeFactory.instance.objectNode();
     }
 
