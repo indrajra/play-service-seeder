@@ -10,4 +10,4 @@ RUN chown -R sunbird:sunbird /home/sunbird
 USER sunbird
 EXPOSE 9000
 WORKDIR /home/sunbird/
-CMD java  -cp '/home/sunbird/play-service-1.0.0/lib/*' play.core.server.ProdServerStart  /home/sunbird/play-service-1.0.0
+CMD java -XX:+PrintFlagsFinal $JAVA_OPTIONS -cp '/home/sunbird/play-service-1.0.0/lib/*' play.core.server.ProdServerStart  /home/sunbird/play-service-1.0.0
