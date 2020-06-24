@@ -12,6 +12,7 @@ public class BadTestController extends BaseController {
     if (request.getOperation() != null) {
       return handleRequest(request);
     } else {
+      request.setOperation("throwException");
       return handleRequest(request);
     }
   }

@@ -13,6 +13,7 @@ import play.mvc.Results;
  */
 public class ResponseHandler {
 
+  private ResponseHandler() {}
   /**
    * This method will handle all the failure response of Api calls.
    *

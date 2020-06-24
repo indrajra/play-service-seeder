@@ -32,9 +32,7 @@ public class HealthController extends BaseController {
    */
   public CompletionStage<Result> getServiceHealth(String serviceName, Http.Request req) {
     Request request = createSBRequest(req);
-    if (service.equals(serviceName)) {
-      request.getContext().put("service", serviceName);
-    }
+    request.getContext().put("service", serviceName);
     request.setOperation("health");
     return handleRequest(request);
   }
